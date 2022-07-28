@@ -28,6 +28,6 @@ public class LogAspect {
 
     @AfterThrowing(value = "@annotation(LogArgumentResult)",throwing = "exception")
     public void traceAfterException(Throwable exception) {
-        log.info("EXCEPTION : {}",exception.getMessage());
+        log.error("EXCEPTION : {}",exception.getMessage());
     }
 }
