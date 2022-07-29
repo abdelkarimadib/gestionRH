@@ -21,5 +21,7 @@ public class LoginHandle {
     @NotNull(message = "password required")
     private String password;
 
+    private Long id;
+
     private String token;
 }

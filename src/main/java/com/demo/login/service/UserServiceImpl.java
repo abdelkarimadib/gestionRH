@@ -78,7 +78,8 @@ public class UserServiceImpl implements IUserService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginHandle.getPassword()));
 
         loginHandle = new LoginHandle();
-        loginHandle.setToken(jwtTokenProvider.createToken(username, findByEmail(username).getRoles()));
+        loginHandle.setId(userDb.getId());
+        loginHandle.setToken(jwtTokenProvider.createToken(username, findByEmail(username).getRoles(),userDb.getId()));
 
         return loginHandle;
     }
