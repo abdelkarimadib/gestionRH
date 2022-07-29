@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class LoginHandle {
 
     @NotNull(message = "userName required")
-    private String userName;
+    private String username;
 
     @NotNull(message = "password required")
     private String password;

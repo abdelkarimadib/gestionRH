@@ -42,14 +42,14 @@ public class UserServiceImpl implements IUserService {
     @LogArgumentResult
     public UserDTO findById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("user with id : "+id));
+                .orElseThrow(() -> new NotFoundException("utilisateur introuvable avec id : "+id));
         return userMapper.mapToDto(user);
     }
 
     @LogArgumentResult
     public UserDTO findByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("user with email : "+email));
+                .orElseThrow(() -> new NotFoundException("utilisateur introuvable avec email : "+email));
         return userMapper.mapToDto(user);
     }
 
@@ -57,7 +57,7 @@ public class UserServiceImpl implements IUserService {
     public UserDTO createUser(UserDTO userDTO) {
         Optional<User> user = userRepository.findByEmail(userDTO.getEmail());
         if (user.isPresent()) {
-            throw new AlreadyExistException("Credentials Already Exist");
+            throw new AlreadyExistException("email exist deja");
         }
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userMapper.mapToDto(userRepository.save(userMapper.mapToEntity(userDTO)));
@@ -66,13 +66,13 @@ public class UserServiceImpl implements IUserService {
     @LogArgumentResult
     public LoginHandle authenticate(LoginHandle loginHandle) {
 
-        String username = loginHandle.getUserName();
+        String username = loginHandle.getUsername();
         User userDb = userRepository.findByEmail(username).orElseThrow(
-                () -> new NotFoundException("user with email : "+username)
+                () -> new NotFoundException("utilisateur introuvable avec email : "+username)
         );
 
         if (!passwordEncoder.matches(loginHandle.getPassword(), userDb.getPassword())) {
-            throw new WrongPasswordException("wrong password");
+            throw new WrongPasswordException("Mot de passe invalide");
         }
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginHandle.getPassword()));
